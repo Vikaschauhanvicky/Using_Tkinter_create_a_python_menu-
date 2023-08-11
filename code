@@ -1,0 +1,317 @@
+import os
+import tkinter as tk
+from tkinter import messagebox
+import boto3
+import cv2
+import numpy as np
+from googlesearch import search
+import speech_recognition as sr
+
+# Function to open the selected application
+def open_application(app_number):
+    if app_number == 0:
+        # Install Twilio library : pip install twilio
+        from twilio.rest import Client
+
+        # Your Twilio account SID and Auth Token
+        account_sid = 'AC550b822fd3cf957bbfbdb502377a0a9e'
+        auth_token = 'd4217a35bec436a1204b9ecee0be6688'
+
+        # Create a Twilio client
+        client = Client(account_sid, auth_token)
+
+        # Replace 'to_phone_number' with the recipient's phone number
+        # Replace 'from_phone_number' with your Twilio phone number
+        message = client.messages.create(
+            body="Hey,Hi I just text u using python",
+            from_='+15312312282',  # Replace with your Twilio phone number
+            to='+919573809701'      # Replace with the recipient's phone number
+        )
+
+        print("Message sent successfully!")      
+        
+    elif app_number == 1:
+        import numpy as np
+        import cv2
+        
+        pic1 = np.zeros((400,400,3), dtype=np.uint8) #Create a blank image with 400 Rows and 400 Columns
+
+        #Background
+        pic1[:100,:100]=[0,255,0]          # [ROWS : COLUMNS] = [COLOUR - B, G, R] 
+        pic1[:100,100:200]=[6,130,235]
+        pic1[:100,200:300]=[255,0,0]
+        pic1[:100,300:400]=[245,240,82]
+
+        pic1[100:200,:100]=[60,255,253]
+        pic1[100:200,100:200]=[239,79,255]
+        pic1[100:200,200:300]=[38,125,55]
+        pic1[100:200,300:400]=[187,130,127]
+
+        pic1[200:300,:100]=[94,19,88]
+        pic1[200:300,100:200]=[124,65,22]
+        pic1[200:300,200:300]=[174,233,242]
+        pic1[200:300,300:400]=[95,165,255]
+
+        pic1[300:400,:100]=[0,255,253]
+        pic1[300:400,100:200]=[239,79,145]
+        pic1[300:400,200:300]=[38,177,45]
+        pic1[300:400,300:400]=[43,43,43]
+
+
+        #White
+        pic1[50:150,50:150]=[255,255,255]
+        pic1[50:150,250:350]=[255,255,255]
+
+        pic1[250:350,50:150]=[255,255,255]
+        pic1[250:350,250:350]=[255,255,255]
+
+        #ReD
+        pic1[125:275,125:275]=[0,0,255]
+
+        #White's Boarder
+        pic1[125:126,125:275]=[0,0,0]
+        pic1[125:275,125:126]=[0,0,0]
+        pic1[275:276,125:275]=[0,0,0]
+        pic1[125:275,275:276]=[0,0,0]
+
+        #RED Boarder
+        pic1[50,50:350]=[0,0,0]
+        pic1[50:350,50]=[0,0,0]
+        pic1[350,50:350]=[0,0,0]
+        pic1[50:350,350]=[0,0,0]
+
+        #L
+        pic1[150:250, 150:160] = [255,255,255]
+        pic1[240:250,150:190]=[255,255,255]
+
+        #W
+        pic1[150:250, 200:210] = [255,255,255]
+        pic1[150:250, 240:250] = [255,255,255]
+        pic1[240:250,210:240]=[255,255,255]
+        pic1[210:250,220:230]=[255,255,255]
+        
+        
+        cv2.imshow("win", pic1) #show Image
+        cv2.waitKey() #Hold the image window
+        cv2.destroyAllWindows() # destroy @close Image window
+
+        #cv2.imwrite("Digital.jpg", pic1) #save image
+        
+    elif app_number == 2:
+        #def get_user_query():
+        #    return input("Enter to Search ?")
+
+        def google_search(query):
+            top_results = list(search(query, num_results = 5))
+
+            print(f"\n Top 5 results for '{query}':\n")
+            for idx, result in enumerate(top_results, start=1):
+                print(f"{idx}. {result}")
+
+        if _name_ == "_main_":
+                      user_query = input("How can I help you :)  ") #get_user_query()
+                      google_search(user_query)
+    elif app_number == 3:
+        import cv2
+        
+        cap = cv2.VideoCapture(0) #connect camera
+
+        status, photo = cap.read() # click photo
+
+        while True:
+            status, photo = cap.read() #start capturing images
+            photo[:200,:200] = photo[200:400,200:400]
+            cv2.imshow("Win", photo)
+            if cv2.waitKey(20) == 13: #press enter to close
+                break
+        cv2.destroyAllWindows()
+        cap.release()
+    elif app_number == 4:
+        os.system("start brave")
+    elif app_number == 5:
+        os.system("write")
+    elif app_number == 6:
+        os.system("explorer")
+    elif app_number == 7:
+        os.system("jupyter notebook")
+    elif app_number == 8:
+        os.system("start Excel")
+    elif app_number == 9:
+        os.system("start Onedrive")
+    elif app_number == 10:
+        myec2 = boto3.client("ec2", )
+
+        Launch = myec2.run_instances(
+                            ImageId='ami-0ded8326293d3201b',
+                            InstanceType='t2.micro',
+                            MaxCount=1,
+                            MinCount=1,
+                            )
+        print("done ec2 launched")
+    elif app_number == 11:
+        s3 = boto3.client('s3')
+
+        #Create_bucket
+        Bucket = s3.create_bucket(
+                                    ACL='private',
+                                    Bucket='pythonmenutaskpresentation_s3_bucket_in_aws',
+                                    CreateBucketConfiguration = {'LocationConstraint' : 'ap-south-1'} ,
+
+        )
+        print("Done S3 bucket created")
+    elif app_number == 12:
+        import cv2
+        facemodel=cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+        cap = cv2.VideoCapture(0)
+        while True:
+            status, photo = cap.read()
+            myfacecoord1 = facemodel.detectMultiScale(photo)
+
+            if len(myfacecoord1) >= 1:
+                x1, y1, w1, h1 = myfacecoord1[0]
+                x2 = x1 + w1
+                y2 = y1 + h1
+
+
+
+
+                photo[0:h1, 0:w1] = photo[y1:y2, x1:x2]
+
+                cv2.imshow("hi", photo)
+
+            if cv2.waitKey(10) == 13:
+                break
+
+        cv2.destroyAllWindows()
+        cap.release()
+    elif app_number == 13:
+        try:
+         while(True):
+          print("1.) Say to click the photo if you want to capture the photo")
+          print("2.) Say show the photo if you want to check the photo")
+          print("3.) Say apply filter if you want to apply the filter on picture")   
+          print("4.) Say stop or close the program if you want to stop the program")
+          new= sr.Recognizer()
+          with sr.Microphone() as source:
+              print("Listening.....")
+              data=new.listen(source)
+              text=new.recognize_google(data)
+              print("Got it....."+text)
+
+          if("click" in text):
+            print("Clicking the photo...")
+            cap=cv2.VideoCapture(0)
+            status,image=cap.read()
+            cap.release()
+
+          elif("filter" in text):
+            grey_image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+            cv2.imshow("B&W Image",grey_image)
+            cv2.waitKey(3000)
+            cv2.destroyAllWindows()
+
+          elif("show" in text):
+            print("Showing the picture...")
+            cv2.imshow('Picture',image)
+            cv2.waitKey(3000)
+            cv2.destroyAllWindows()
+
+          elif("stop" or "close" in text):
+            print("Closing the program...")
+            break
+          else:
+            print("Sorry, I couldn't understand that.")
+            print("Please try again.")
+        except:
+            print("Sorry, I couldn't understand that. Closing the program...")
+    elif app_number == 14:
+        import time
+        import cv2
+        import webbrowser
+        from cvzone.HandTrackingModule import HandDetector
+        import pyautogui
+
+        model = HandDetector()
+
+        cap = cv2.VideoCapture(0)
+
+        while True:
+            status, photo = cap.read()
+            cv2.imshow("doll", photo)
+            if cv2.waitKey(50) == 13:
+                break
+            hand = model.findHands(photo, draw = False)  
+            if hand:
+                handphoto = hand[0]
+                fingersup = model.fingersUp(handphoto)
+                if fingersup == [0, 0, 0, 0, 0]:            #to play/pause
+                    pyautogui.moveTo(554, 390, duration=0.0)
+                    pyautogui.click()
+                    time.sleep(1)
+                elif fingersup == [0, 1, 0, 0, 0]:
+                    webbrowser.open("https://music.youtube.com/watch?v=UNOtbkQxECI")
+                    time.sleep(1)
+                    print("Playing....Mood")
+                elif fingersup == [0, 1, 1, 0, 0]:
+                    webbrowser.open("https://music.youtube.com/watch?v=VKC_hzJ3jzg&list=RDAMVMMMfpp0-lnw4")
+                    time.sleep(1)
+                    print("Playing....Señorita")
+                elif fingersup == [0, 1, 1, 1, 0]:
+                    webbrowser.open("https://music.youtube.com/watch?v=ORrFJ63nlcA&list=RDAMVMORrFJ63nlcA")
+                    time.sleep(1)
+                    print("Playing....Perfect")
+                elif fingersup == [0, 1, 1, 1, 1]:
+                    webbrowser.open("https://music.youtube.com/watch?v=XfEMj-z3TtA&list=RDAMVMXfEMj-z3")
+                    time.sleep(1)
+                    print("Playing....STAY")
+                elif fingersup == [1, 1, 1, 1, 1]:
+                    webbrowser.open("https://music.youtube.com/watch?v=Hx4nWW9z0ig&list=RDAMVMXfEMj-z3TtA")
+                    time.sleep(1)
+                    print("Playing....Dance Monkey")
+                else:
+                    print("sorry")
+
+        cv2.destroyAllWindows()
+        cap.release()
+        
+    else:
+        messagebox.showinfo("Invalid Input", "Sorry, that option is not available in the menu.")
+
+# Create the main window
+root = tk.Tk()
+root.title("Assistant")
+
+# Welcome note
+welcome_label = tk.Label(root, text="Team 5 - Mugiwara")
+welcome_label.pack(pady=30)
+
+# Menu
+menu_label = tk.Label(root, text="Menu:")
+menu_label.pack()
+
+# Create buttons for each application option in the menu
+button_labels = [
+    "1. Send SMS",
+    "2. Generate Image",
+    "3. Google Search",
+    "4. Video Crop - Top corner",
+    "5. Brave",
+    "6. MS Word",
+    "7. File Explorer",
+    "8. Jupyter Notebook",
+    "9. MS Excel",
+    "10. Onedrive",
+    "11. EC2 Instance Launch",
+    "12. Launch S3 Bucket",
+    "13. Real time Face Crop",
+    "14. Voice Photographer",
+    "15. Hand Gesture Music Controller",
+]
+
+
+for idx, label in enumerate(button_labels):
+    button = tk.Button(root, text=label, command=lambda app_number=idx: open_application(app_number))
+    button.pack(pady=5)
+
+# Run the main loop
+root.mainloop()
